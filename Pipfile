@@ -4,3 +4,9 @@ verify_ssl = true
 
 [packages]
 flask = "*"
+requests = "*"
+
+[dev-packages]
+mock = "*"
+green = "*"
+coverage = "*"
