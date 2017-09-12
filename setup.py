@@ -1,4 +1,4 @@
-__author__ = 'tinglev'
+__author__ = 'tinglev@kth.se'
 
 from setuptools import setup
 

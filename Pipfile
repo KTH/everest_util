@@ -5,6 +5,7 @@ verify_ssl = true
 [packages]
 flask = "*"
 requests = "*"
+coloredlogs = "*"
 
 [dev-packages]
 mock = "*"
