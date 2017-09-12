@@ -28,7 +28,9 @@ development_package_name = "*"
 ```
 3. Run `pipenv install` to install dependencies and create a `Pipfile.lock` file
 
-4. everest_util is not importable as any other library, for instance like this:
+4. Run your application with `pipenv run python app.py` 
+
+5. everest_util is now importable as any other library, for instance like this:
 ```python
 from everest_util.process import Process
 ```
