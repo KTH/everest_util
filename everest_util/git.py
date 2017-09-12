@@ -4,6 +4,7 @@ Class for getting changes from a git repository
 __author__ = 'tinglev@kth.se'
 
 import os
+import logging
 from everest_util.process import Process
 
 class GitException(Exception):
@@ -24,8 +25,11 @@ class Git(object):
             repo_path: local directory path to place git repo when fetched
             gir_url: the url to the git repo (for instance 'gita.sys.kth.se/Infosys/dizin')
         """
+        self.log = logging.getLogger(__name__)
         self.git_url = git_url
         self.repo_path = repo_path
+        self.log.debug('Git module initialized with git url "%s" and repo path "%s"',
+                       self.git_url, self.repo_path)
 
     def create_repo_dir_if_missing(self):
         """
@@ -34,6 +38,7 @@ class Git(object):
             Nothing
         """
         if not os.path.isdir(self.repo_path):
+            self.log.debug('Git repo path was missing - creating it..')
             os.makedirs(self.repo_path)
 
     def clone(self):
