@@ -10,9 +10,11 @@ def init_logging(debug_env_var):
     """
     Initializes logging colors and levels. Should be called before any logging
     is done i the calling application.
+
     Args:
         debug_env_var: the name of the environment variable that decides
                        if logging level should be set to 'DEBUG'
+                       
     Returns:
         Nothing
     """

@@ -17,6 +17,7 @@ class EnvironmentList(object):
     def to_json(self):
         """
         Returns a JSON representation of the environment variable list
+
         Returns:
             json array: an array containing environment variables on the format KEY=VALUE
         """
@@ -25,6 +26,7 @@ class EnvironmentList(object):
     def add_env(self, key, value):
         """
         Add an environment variable to the list
+
         Args:
             key: the key
             value: the value

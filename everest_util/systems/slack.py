@@ -38,10 +38,14 @@ class SlackTooManyAttachmentsException(Exception):
 
 
 class Slack(object):
+    """
+    The class
+    """
 
     def __init__(self, webhook_url):
         """
         Constructor for the Slack class
+
         Args:
             webhook_url: the webhook url to use for this class instance
         """
@@ -51,11 +55,14 @@ class Slack(object):
     def add_attachement_to_body(self, body, attachment):
         """
             Adds an attachment to a payload body object
+
             Args:
                 body: the body of a payload object
                 attachment: the attachment object to add to the body
+
             Returns:
                 json: the body object with the attachment added
+
             Raises:
                 SlackTooManyAttachmentsException: when the number of attachments
                     are too big
@@ -72,6 +79,7 @@ class Slack(object):
     def create_payload_attachment(self, fallback, color, author_name, author_link, title, text):
         """
         Creates a valid Slack attachment to attach to a payload body
+
         Args:
             fallback: the fallback text of the message
             color: the color of the attachment
@@ -79,6 +87,7 @@ class Slack(object):
             author_link: the link when clicking the authors name
             title: the title
             text: the text
+
         Returns:
             json: a valid Slack attachment json object
         """
@@ -94,11 +103,13 @@ class Slack(object):
     def create_payload_body(self, channel, text, username, icon):
         """
         Creates a valid Slack payload body from the given arguments
+
         Args:
             channel: the channel to send this message to
             text: the text of the message
             username: the username to show as the sender in Slack for this message
             icon: the emoji to use for this message (for instance :+1:)
+
         Returns:
             json: a valid Slack payload body json object
         """
@@ -112,10 +123,13 @@ class Slack(object):
     def call_slack_endpoint(self, payload):
         """
         Makes the actual REST call to the webhook url with a given payload
+
         Args:
             payload: a json object with the Slack payload to send
+
         Returns:
             response: the requests.response object returned from the call
+
         Raises:
             Wrapped exceptions (see above)
         """

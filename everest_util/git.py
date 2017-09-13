@@ -21,6 +21,7 @@ class Git(object):
     def __init__(self, repo_path, git_url):
         """
         Constructor
+
         Args:
             repo_path: local directory path to place git repo when fetched
             gir_url: the url to the git repo (for instance 'gita.sys.kth.se/Infosys/dizin')
@@ -35,6 +36,7 @@ class Git(object):
         """
         Clones the given git repo to disk. Also creates the local repo directory
         if it is currently missing.
+
         Returns:
             string: the output from the git clone command
         """
@@ -46,6 +48,7 @@ class Git(object):
     def reset(self):
         """
         Resets the local git repository
+
         Returns:
             string: the ouput from the git reset command
         """
@@ -56,6 +59,7 @@ class Git(object):
     def fetch(self):
         """
         Fetches the latest version of the remote git repo
+
         Returns:
             string: the output from the git fetch command
         """
@@ -65,6 +69,7 @@ class Git(object):
     def clean(self):
         """
         Cleans the local git repo
+
         Returns:
             string: the output from the git clean command
         """
@@ -75,8 +80,10 @@ class Git(object):
         """
         Chains clone, fetch, reset and clean to get all the latest changes from the remote
         git repo
+
         Returns:
             string: the combined output of all the git commands run
+
         Raises:
             GitException: when an error is encountered during one of the git commands
         """

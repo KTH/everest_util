@@ -16,10 +16,13 @@ class Paths(object):
         """
         Get the directory of a given file. Should be
         called with __file__ as the only argument.
+
         Args:
             file_path: __file__
+
         Returns:
             string: the name of the directory containing the file
+            
         Raises:
             OSError: on path or file error
         """

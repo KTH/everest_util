@@ -23,6 +23,7 @@ class Image(object):
     def to_json(self):
         """
         Returns a json respresentation of an image
+
         Returns:
             json: a json object
         """

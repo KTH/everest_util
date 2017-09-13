@@ -25,10 +25,13 @@ class Process(object):
     def run_with_output(cmd):
         """
         Calls a given command and returns its output
+
         Args:
             cmd: the command to run
+
         Returns:
             string: the output from the command run
+
         Raises:
             ProcessException: on error during execution
         """

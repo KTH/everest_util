@@ -29,6 +29,7 @@ class Registry(object):
     def __init__(self, username, password, base_url):
         """
         Constructor
+
         Args:
             username: username to login to the registry with
             password: password to login to the registry with
@@ -44,10 +45,13 @@ class Registry(object):
     def get_image_tags(self, image_name):
         """
         Gets the tags for the given image name from the registry
+
         Args:
             image_name: the name of the image
+
         Returns:
             json array: an array with all tags for the given image
+
         Raises:
             RegistryImageException: on no tags found or parse error of tags
         """
