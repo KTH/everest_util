@@ -47,7 +47,7 @@ class Image(object):
     def get_registry(self):
         """
         Getter for the registry attribute
-        """        
+        """
         return self._registry
 
     def set_name(self, name):
@@ -95,7 +95,7 @@ class Image(object):
     def get_is_semver(self):
         """
         Getter for the is semver flag
-        """        
+        """
         return self._is_semver
 
     def set_version_env_key(self, env_key):

@@ -44,7 +44,7 @@ class Version(object):
         """
         if not Version._is_valid_semver(semver_string):
             raise VersionException('Semver version under service environment is invalid: "{}"'
-                                .format(semver_string))
+                                   .format(semver_string))
         for ver in sorted_valid_versions:
             max_build = Version._semver_max_build(semver_string)
             max_minor = Version._semver_max_minor(semver_string)
@@ -57,7 +57,7 @@ class Version(object):
                     if Version._get_build(ver) == Version._get_build(semver_string):
                         return ver
         raise VersionException('No image found for requested version "{}"'
-                            .format(semver_string))
+                               .format(semver_string))
 
     @staticmethod
     def _is_valid_semver(version_string):
@@ -72,10 +72,8 @@ class Version(object):
         if Version._get_major(ver1) == Version._get_major(ver2):
             if Version._get_minor(ver1) == Version._get_minor(ver2):
                 return Version._get_build(ver2) - Version._get_build(ver1)
-            else:
-                return Version._get_minor(ver2) - Version._get_minor(ver1)
-        else:
-            return Version._get_major(ver2) - Version._get_major(ver1)
+            return Version._get_minor(ver2) - Version._get_minor(ver1)
+        return Version._get_major(ver2) - Version._get_major(ver1)
 
     @staticmethod
     def _get_major(version):

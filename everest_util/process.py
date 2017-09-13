@@ -38,4 +38,4 @@ class Process(object):
                                            shell=True, close_fds=True)
         except subprocess.CalledProcessError as cpe:
             raise ProcessException('Shell command gave error with output "{}"'
-                                  .format(cpe.output.rstrip('\n')))
+                                   .format(cpe.output.rstrip('\n')))

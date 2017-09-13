@@ -40,8 +40,8 @@ class Git(object):
         """
         self._create_repo_dir_if_missing()
         return Process.run_with_output('git clone git@{} {}'
-                                        .format(self.git_url,
-                                                self.repo_path))
+                                       .format(self.git_url,
+                                               self.repo_path))
 
     def reset(self):
         """
