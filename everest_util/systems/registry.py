@@ -6,15 +6,16 @@ __author__ = 'tinglev@kth.se'
 import logging
 import requests
 from requests import ConnectionError, HTTPError, Timeout
+from everest_util.base_exception import BaseException
 
-class RegistryImageException(Exception):
+class RegistryImageException(BaseException):
     """
     Exception raised when there was a trouble with a specific image, such as
     missing tags.
     """
     pass
 
-class RegistryHTTPException(Exception):
+class RegistryHTTPException(BaseException):
     """
     Exception raised when an http error of some sort occurs during connection
     to the registry

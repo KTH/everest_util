@@ -10,26 +10,27 @@ __author__ = 'tinglev@kth.se'
 import logging
 import requests
 from requests import HTTPError, ConnectTimeout, RequestException
+from everest_util.base_exception import BaseException
 
-class SlackHTTPErrorException(Exception):
+class SlackHTTPErrorException(BaseException):
     """
     Wrapper around requests.HTTPError
     """
     pass
 
-class SlackTimeoutException(Exception):
+class SlackTimeoutException(BaseException):
     """
     Wrapper around requests.ConnectTimeout
     """
     pass
 
-class SlackRequestException(Exception):
+class SlackRequestException(BaseException):
     """
     Wrapper around requests.RequestException
     """
     pass
 
-class SlackTooManyAttachmentsException(Exception):
+class SlackTooManyAttachmentsException(BaseException):
     """
     Raised when the number of attachments for a payload
     are more than 20

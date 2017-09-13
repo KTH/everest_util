@@ -6,8 +6,9 @@ __author__ = 'tinglev@kth.se'
 
 import subprocess
 import logging
+from everest_util.base_exception import BaseException
 
-class ProcessException(Exception):
+class ProcessException(BaseException):
     """
     Thrown when ever the subprocess execution fails
     """

@@ -6,8 +6,9 @@ __author__ = 'tinglev@kth.se'
 import os
 import logging
 from everest_util.process import Process
+from everest_util.base_exception import BaseException
 
-class GitException(Exception):
+class GitException(BaseException):
     """
     Exception raised when something goes wrong during git fetching
     """
