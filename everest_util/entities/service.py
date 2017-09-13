@@ -55,6 +55,9 @@ class Service(object):
         Args:
             name: the name of the service
             service_struct: the parsed (as json) contents of a docker-stack file
+
+        Raises:
+            ServiceException: on failure during initialization
         """
         self.log.debug('Initializing service with name "%s"', name)
         self._service_struct = service_struct
