@@ -31,16 +31,6 @@ class Git(object):
         self.log.debug('Git module initialized with git url "%s" and repo path "%s"',
                        self.git_url, self.repo_path)
 
-    def create_repo_dir_if_missing(self):
-        """
-        Creates the local repo directory if it's missing
-        Returns:
-            Nothing
-        """
-        if not os.path.isdir(self.repo_path):
-            self.log.debug('Git repo path was missing - creating it..')
-            os.makedirs(self.repo_path)
-
     def clone(self):
         """
         Clones the given git repo to disk. Also creates the local repo directory
@@ -48,7 +38,7 @@ class Git(object):
         Returns:
             string: the output from the git clone command
         """
-        self.create_repo_dir_if_missing()
+        self._create_repo_dir_if_missing()
         return Process.run_with_output('git clone git@{} {}'
                                         .format(self.git_url,
                                                 self.repo_path))
@@ -94,3 +84,8 @@ class Git(object):
             return '{}{}{}{}'.format(self.clone(), self.fetch(), self.reset(), self.clean())
         except Exception as exc:
             raise GitException('Failed to fetch git changes', ex=exc)
+
+    def _create_repo_dir_if_missing(self):
+        if not os.path.isdir(self.repo_path):
+            self.log.debug('Git repo path was missing - creating it..')
+            os.makedirs(self.repo_path)

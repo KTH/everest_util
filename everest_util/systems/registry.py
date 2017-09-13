@@ -57,15 +57,6 @@ class Registry(object):
         return self._get_tags_list_from_response(response)
 
     def _get_tags_list_from_response(self, response):
-        """
-        Parses a registry response for the image tags array
-        Args:
-            response: the requests library response for the API call to the registry
-        Returns:
-            json array: an array with all tags for the given image
-        Raises:
-            RegistryImageException: on no tags found or parse error of tags
-        """
         try:
             return response.json()["tags"]
         except KeyError as key_err:
@@ -74,29 +65,11 @@ class Registry(object):
             raise RegistryImageException('Could not parse json response from registry', json_err)
 
     def _get_tags_url(self, image_name):
-        """
-        Constructs a list tags API call url for an image name
-        Args:
-            image_name: the name of the image
-        Returns:
-            string: the url for the API call
-        """
         tags_url = "{}/v2/{}/tags/list".format(self.base_url, image_name)
         self.log.debug('Getting tags from url %s', tags_url)
         return tags_url
 
     def _registry_request(self, url):
-        """
-        Makes the actual request to the registry API
-        Args:
-            url: the url to request
-        Returns:
-            requests->response: a response object for the call
-        Raises
-            RegistryHTTPException: on timeout, connection error or other http error
-            RegistryImageException: on a 404 response from the registry, indicating that
-                                    the given image has no tags
-        """
         try:
             response = requests.get(url, auth=(self.username, self.password))
             response.raise_for_status()
@@ -109,18 +82,6 @@ class Registry(object):
             self._handle_http_error(http_ex, url)
 
     def _handle_http_error(self, error, url):
-        """
-        QoL function to handle HTTPErrors from the request
-        Args:
-            error: the HTTPError raised
-            url: the original url called
-        Returns:
-            Nothing
-        Raises:
-            RegistryHTTPException: on a non-404 code in the response
-            RegistryImageException: on a 404 response from the registry, indicating that
-                                    the given image has no tags            
-        """
         code = error.response.status_code
         if code == 404:
             raise RegistryImageException('Nothing found in KTH Docker Registry for {}'
