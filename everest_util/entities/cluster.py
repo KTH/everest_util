@@ -23,7 +23,9 @@ class Cluster(json.JSONEncoder):
     The class
     """
 
-    def __init__(self, use_clusters_env_var):
+    USE_CLUSTERS_ENV_VAR = 'USE_CLUSTERS'
+
+    def __init__(self, project_root_path):
         """
         Constructor
 
@@ -35,8 +37,8 @@ class Cluster(json.JSONEncoder):
         self._file_path = None
         self._env_file_path = None
         self._env_list = EnvironmentList()
-        self._use_clusters_env_var = use_clusters_env_var
         self.log = logging.getLogger(__name__)
+        self.project_root_path = project_root_path
         super(Cluster, json.JSONEncoder).__init__(self)
 
     def init_from_service_file(self, service_file_path):
@@ -88,7 +90,7 @@ class Cluster(json.JSONEncoder):
         Returns:
             string: the name of the environment variable for used clusters
         """
-        return self._use_clusters_env_var
+        return Cluster.USE_CLUSTERS_ENV_VAR
 
     def __eq__(self, cluster):
         """
@@ -97,6 +99,13 @@ class Cluster(json.JSONEncoder):
         return self.get_name() == cluster.get_name()
 
     def _use_cluster(self):
+        """
+        Determines wether or not this cluster should be used for deployments,
+        as set by the USE_CLUSTERS_ENV_VAR environment variable
+
+        Returns:
+            boolean: true if this cluster should be used for deployments, else false
+        """
         use_clusters = os.environ.get(self.get_use_clusters_env_var())
         if not use_clusters:
             return True
@@ -105,6 +114,13 @@ class Cluster(json.JSONEncoder):
         return False
 
     def _raise_on_bad_cluster(self):
+        """
+        Raises a cluster exception if this cluster should not be used for deployments
+
+        Raises:
+            ClusterException: if this cluster is missing from the USE_CLUSTERS_ENV_VAR
+                              environment variable
+        """
         if not self._use_cluster():
             raise ClusterException('Cluster is not listed in environment variable "{}". '
                                    'The value of the env var is "{}"'
@@ -112,6 +128,16 @@ class Cluster(json.JSONEncoder):
                                            os.environ.get(self.get_use_clusters_env_var())))
 
     def _set_cluster_name(self):
+        """
+        Parses the cluster name from the docker-stack file path
+
+        Returns:
+            Nothing (sets member variable)
+
+        Raises:
+            ClusterException: if the cluster name was unable to be parsed
+                              from the file path
+        """
         match = re.search(Regex.get_cellus_registry_cluster(), self._file_path)
         if match:
             self._name = match.group(1)
@@ -120,10 +146,25 @@ class Cluster(json.JSONEncoder):
                                .format(self._file_path))
 
     def _get_env_file_name(self):
+        """
+        Gets the environment file name for this cluster
+
+        Returns:
+            string: the name of the cluster environment file
+        """
         return '{}-environment.env'.format(self._name)
 
     def _set_env_file_path(self):
-        env_file_path = '{}/{}'.format(Paths.get_registry_deploy_path(),
+        """
+        Calculates the complete file path for this clusters environment file
+
+        Returns:
+            Nothing (sets member variable)
+
+        Raises:
+            ClusterException: When the calculated environment file does not exist
+        """
+        env_file_path = '{}/{}'.format(Paths.get_registry_deploy_path(self.project_root_path),
                                        self._get_env_file_name())
         if os.path.isfile(env_file_path):
             self._env_file_path = env_file_path
@@ -131,6 +172,12 @@ class Cluster(json.JSONEncoder):
         raise ClusterException('Cluster env file "{}" does not exist'.format(env_file_path))
 
     def _read_environment_from_file(self):
+        """
+        Reads this clusters environment file to a EnvironmentList class instance
+
+        Raises:
+            ClusterException: on error while reading the environment file
+        """
         self.log.debug('Reading cluster environment from: "%s"', self._env_file_path)
         try:
             with open(self._env_file_path, 'r') as env_file:
@@ -143,6 +190,16 @@ class Cluster(json.JSONEncoder):
                                    .format(self._env_file_path), io_err)
 
     def _matched_env_lines(self, file_handle):
+        """
+        Reads a file handle and returns an array of tuples with all valid environment variables
+        found in the file
+
+        Args:
+            file_handle: the file handle to the file to be read
+
+        Returns:
+            array of tuples: an array of tuples with the format [(env_key, env_val),..]
+        """
         env_regex = Regex.get_label_and_env_regex()
         return [(line.split('=')[0], line.split('=')[1].rstrip('\n'))
                 for line in file_handle.readlines()
