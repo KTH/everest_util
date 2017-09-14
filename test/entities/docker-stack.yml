@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+
+  web:
+    image: kth-docker-registry.sys.kth.se/kth-azure-app:${WEB_VERSION}
+    environment:
+      WEB_VERSION: "~2.2.1"
+    env_file:
+      - ./cellus-registry/deploy/kth-azure-app/development/secrets.decrypted.env
+    ports:
+      - 3000
+    depends_on:
+     - redis
+    deploy:
+      replicas: 1
+      labels:
+        - com.df.notify=true
+        - com.df.distribute=true
+        - com.df.servicePath=/kth-azure-app
+        - com.df.reqPathSearch=/kth-azure-app/
+        - com.df.reqPathReplace=/
+        - com.df.port=3000
+      resources:
+        limits:
+          cpus: '0.001'
+          memory: 50M
+        reservations:
+          cpus: '0.0001'
+          memory: 20M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 2
+        window: 30s
+    networks:
+      - default
+      #- proxy
+
+  redis:
+    image: redis:3.2.6-alpine
+    deploy:
+      replicas: 1
+    ports:
+      - 6379
+    networks:
+      - default
+
+networks:
+  default:
+    external: false
+  #proxy:
+    #external: true
