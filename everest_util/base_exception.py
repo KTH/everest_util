@@ -3,7 +3,7 @@ Base exceptions for all exceptions defined in this library
 """
 __author__ = 'tinglev@kth.se'
 
-class BaseException(Exception):
+class EverestException(Exception):
     """
     The class
     """
@@ -14,4 +14,4 @@ class BaseException(Exception):
         """
         if ex:
             message = '{} ({})'.format(message, ex.message)
-        super(BaseException, self).__init__(message)
+        super(EverestException, self).__init__(message)

@@ -5,9 +5,9 @@ __author__ = 'tinglev@kth.se'
 
 import re
 from everest_util.regex import Regex
-from everest_util.base_exception import BaseException
+from everest_util.base_exception import EverestException
 
-class VersionException(BaseException):
+class VersionException(EverestException):
     """
     Raised when an error occurs during processing
     """

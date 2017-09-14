@@ -11,9 +11,9 @@ from everest_util.entities.environment_list import EnvironmentList
 from everest_util.entities.label_list import LabelList
 from everest_util.regex import Regex
 from everest_util.version import Version
-from everest_util.base_exception import BaseException
+from everest_util.base_exception import EverestException
 
-class ServiceException(BaseException):
+class ServiceException(EverestException):
     """
     Exception raised when there is an error during the processing of the service
     """

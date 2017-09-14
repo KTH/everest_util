@@ -10,9 +10,9 @@ import json
 from everest_util.paths import Paths
 from everest_util.entities.environment_list import EnvironmentList
 from everest_util.regex import Regex
-from everest_util.base_exception import BaseException
+from everest_util.base_exception import EverestException
 
-class ClusterException(BaseException):
+class ClusterException(EverestException):
     """
     Exception raised when errors occur during cluster processing
     """
