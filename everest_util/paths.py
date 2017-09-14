@@ -30,7 +30,7 @@ class Paths(object):
             OSError: on path or file error
         """
         return os.path.dirname(os.path.abspath(file_path))
-    
+
     @staticmethod
     def get_registry_dir_name():
         """

@@ -20,14 +20,17 @@ class Regex(object):
         return r'[^\s#="]+=(([^\s#="]+)|(".+"))$'
 
     @staticmethod
-    def get_cellus_registry_cluster():
+    def get_registry_app_and_cluster():
         """
-        Matches the cluster name from a cellus-registry directory path
+        Matches the app and cluster name from a cellus-registry directory path
+        Groups:
+            1: application
+            2: cluster
 
         Valid example:
-            ../deploy/dizin/[cluster]/..
+            ../deploy/dizin/stage/..
         """
-        return r'^.+/deploy/.+/(.+)/.+$'
+        return r'^.+/deploy/(.+)/(.+)/.+$'
 
     @staticmethod
     def get_env_var_dereference_regex():

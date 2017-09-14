@@ -138,9 +138,9 @@ class Cluster(json.JSONEncoder):
             ClusterException: if the cluster name was unable to be parsed
                               from the file path
         """
-        match = re.search(Regex.get_cellus_registry_cluster(), self._file_path)
+        match = re.search(Regex.get_registry_app_and_cluster(), self._file_path)
         if match:
-            self._name = match.group(1)
+            self._name = match.group(2)
             return
         raise ClusterException('Could not get cluster name from service file path "{}"'
                                .format(self._file_path))
