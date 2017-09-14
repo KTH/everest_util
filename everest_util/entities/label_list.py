@@ -3,7 +3,9 @@ Class representation of a list of labels from a docker-stack file
 """
 __author__ = 'tinglev@kth.se'
 
-class LabelList(object):
+import json
+
+class LabelList(json.JSONEncoder):
     """
     The class
     """
@@ -13,13 +15,14 @@ class LabelList(object):
         Constructor
         """
         self._label_list = []
+        super(LabelList, json.JSONEncoder).__init__(self)
 
-    def to_json(self):
+    def default(self, o): # pylint: disable=E0202
         """
-        Returns a JSON representation of the label list
+        JSONEncoder override
 
         Returns:
-            json array: a JSON array of object on the format [{label: 'label', value: 'value'}]
+            json: a json representation of this class
         """
         return self._label_list
 

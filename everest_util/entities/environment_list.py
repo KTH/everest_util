@@ -3,7 +3,9 @@ Class representation of a list of environment variables
 """
 __author__ = 'tinglev@kth.se'
 
-class EnvironmentList(object):
+import json
+
+class EnvironmentList(json.JSONEncoder):
     """
     The class
     """
@@ -13,13 +15,14 @@ class EnvironmentList(object):
         Constructor
         """
         self._env_list = []
+        super(EnvironmentList, json.JSONEncoder).__init__(self)
 
-    def to_json(self):
+    def default(self, o): # pylint: disable=E0202
         """
-        Returns a JSON representation of the environment variable list
+        JSONEncoder override
 
         Returns:
-            json array: an array containing environment variables on the format KEY=VALUE
+            json: a json representation of this class
         """
         return self._env_list
 

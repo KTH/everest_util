@@ -5,6 +5,7 @@ __author__ = 'tinglev@kth.se'
 
 import logging
 import re
+import json
 from everest_util.entities.image import Image
 from everest_util.entities.environment_list import EnvironmentList
 from everest_util.entities.label_list import LabelList
@@ -18,7 +19,7 @@ class ServiceException(BaseException):
     """
     pass
 
-class Service(object):
+class Service(json.JSONEncoder):
     """
     The class representation of a service object
     """
@@ -37,12 +38,14 @@ class Service(object):
         self._labels = LabelList()
         self.registry = registry
         self.log = logging.getLogger(__name__)
+        super(Service, json.JSONEncoder).__init__(self)
 
-    def to_json(self):
+    def default(self, o): # pylint: disable=E0202
         """
-        Returns a json representation of the class
+        JSONEncoder override
+
         Returns:
-            json: a json object
+            json: a json representation of this class
         """
         return dict(service_name=self._name, environment=self._env_list,
                     labels=self._labels, deploy_labels=self._deploy_labels,

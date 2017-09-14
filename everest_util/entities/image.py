@@ -3,8 +3,9 @@ Representation of an image in a docker-stack file
 """
 __author__ = 'tinglev@kth.se'
 
+import json
 
-class Image(object):
+class Image(json.JSONEncoder):
     """
     Image class
     """
@@ -19,13 +20,14 @@ class Image(object):
         self._semver_version = None
         self._is_semver = False
         self._version_env_key = None
+        super(Image, json.JSONEncoder).__init__(self)
 
-    def to_json(self):
+    def default(self, o): # pylint: disable=E0202
         """
-        Returns a json respresentation of an image
+        JSONEncoder override
 
         Returns:
-            json: a json object
+            json: a json representation of this class
         """
         return dict(image_name=self._name,
                     static_version=self._static_version,
