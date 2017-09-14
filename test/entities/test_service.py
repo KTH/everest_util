@@ -13,14 +13,14 @@ class ServiceTests(unittest.TestCase):
 
     def test_parse_image_registry(self):
         service = Service(Registry('', '', ''))
-        service._parse_image_registry('kthregistryv2.sys.kth.se/kth-azure-app:1.0.0_abc')
-        self.assertEqual(service._image.get_registry(), 'kthregistryv2.sys.kth.se')
+        service._parse_image_registry('kthregistry.sys.kth.se/kth-azure-app:1.0.0_abc')
+        self.assertEqual(service._image.get_registry(), 'kthregistry.sys.kth.se')
         service._parse_image_registry('redis:1.0.0_abc')
         self.assertIsNone(service._image.get_registry())
 
     def test_parse_image_name(self):
         service = Service(Registry('', '', ''))
-        service._parse_image_name('kthregistryv2.sys.kth.se/kth-azure-app:1.0.0_abc')
+        service._parse_image_name('kthregistry.sys.kth.se/kth-azure-app:1.0.0_abc')
         self.assertEqual(service._image.get_name(), 'kth-azure-app')
         service._parse_image_name('redis:1.0.0_abc')
         self.assertEqual(service._image.get_name(), 'redis')
@@ -28,7 +28,7 @@ class ServiceTests(unittest.TestCase):
 
     def test_parse_image_version(self):
         service = Service(Registry('', '', ''))
-        service._parse_image_version('kthregistryv2.sys.kth.se/kth-azure-app:1.0.0_abc')
+        service._parse_image_version('kthregistry.sys.kth.se/kth-azure-app:1.0.0_abc')
         self.assertEqual(service._image.get_static_version(), '1.0.0_abc')
         service._parse_image_version('kth-azure-app:${{WEB_VERSION}}')
         self.assertEqual(service._image.get_static_version(), '${{WEB_VERSION}}')
