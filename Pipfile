@@ -6,6 +6,7 @@ verify_ssl = true
 flask = "*"
 requests = "*"
 coloredlogs = "*"
+pyyaml = "*"
 
 [dev-packages]
 mock = "*"

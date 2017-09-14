@@ -5,7 +5,7 @@ __author__ = 'tinglev@kth.se'
 
 import json
 
-class LabelList(json.JSONEncoder):
+class LabelList(object):
     """
     The class
     """
@@ -15,9 +15,8 @@ class LabelList(json.JSONEncoder):
         Constructor
         """
         self._label_list = []
-        super(LabelList, json.JSONEncoder).__init__(self)
 
-    def default(self, o): # pylint: disable=E0202
+    def default(self):
         """
         JSONEncoder override
 

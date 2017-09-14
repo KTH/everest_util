@@ -20,7 +20,14 @@ class ApplicationException(EverestException):
     """
     pass
 
-class Application(json.JSONEncoder):
+class ApplicationJsonEncoder(json.JSONEncoder):
+    def default(self, o): # pylint: disable=E0202
+        if hasattr(o, 'default'):
+            return o.default()
+        else:
+            return json.JSONEncoder.default(self, o)
+
+class Application(object):
     """
     The class
     """
@@ -43,9 +50,8 @@ class Application(json.JSONEncoder):
         self._services = []
         self.application_root_path = application_root_path
         self.log = logging.getLogger(__name__)
-        super(Application, json.JSONEncoder).__init__(self)
 
-    def default(self, o): # pylint: disable=E0202
+    def default(self):
         """
         JSONEncoder override
 

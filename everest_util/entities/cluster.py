@@ -18,7 +18,7 @@ class ClusterException(EverestException):
     """
     pass
 
-class Cluster(json.JSONEncoder):
+class Cluster(object):
     """
     The class
     """
@@ -39,7 +39,6 @@ class Cluster(json.JSONEncoder):
         self._env_list = EnvironmentList()
         self.log = logging.getLogger(__name__)
         self.project_root_path = project_root_path
-        super(Cluster, json.JSONEncoder).__init__(self)
 
     def init_from_service_file(self, service_file_path):
         """
@@ -56,7 +55,7 @@ class Cluster(json.JSONEncoder):
         self._read_environment_from_file()
         return self
 
-    def default(self, o): # pylint: disable=E0202
+    def default(self):
         """
         JSONEncoder override
 

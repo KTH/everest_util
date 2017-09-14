@@ -5,7 +5,7 @@ __author__ = 'tinglev@kth.se'
 
 import json
 
-class EnvironmentList(json.JSONEncoder):
+class EnvironmentList(object):
     """
     The class
     """
@@ -15,9 +15,8 @@ class EnvironmentList(json.JSONEncoder):
         Constructor
         """
         self._env_list = []
-        super(EnvironmentList, json.JSONEncoder).__init__(self)
 
-    def default(self, o): # pylint: disable=E0202
+    def default(self):
         """
         JSONEncoder override
 

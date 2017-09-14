@@ -19,7 +19,7 @@ class ServiceException(EverestException):
     """
     pass
 
-class Service(json.JSONEncoder):
+class Service(object):
     """
     The class representation of a service object
     """
@@ -38,9 +38,8 @@ class Service(json.JSONEncoder):
         self._labels = LabelList()
         self.registry = registry
         self.log = logging.getLogger(__name__)
-        super(Service, json.JSONEncoder).__init__(self)
 
-    def default(self, o): # pylint: disable=E0202
+    def default(self):
         """
         JSONEncoder override
 
@@ -154,9 +153,10 @@ class Service(json.JSONEncoder):
             ])
         except KeyError as key_err:
             self.log.debug('Service "%s" has no service deploy labels. '
-                           'Key missing: %s', self._name, key_err)
-            raise ServiceException('Service "%s" has no service deploy labels. '
-                                   'Key missing: %s', self._name, key_err)
+                           'Key missing: %s', self.get_name(), key_err)
+            raise ServiceException('Service "{}" has no service deploy labels. '
+                                   'Key missing: "{}"'.format(self.get_name(), key_err)
+                                   , ex=key_err)
 
     def _parse_labels(self):
         try:
@@ -167,9 +167,10 @@ class Service(json.JSONEncoder):
             ])
         except KeyError as key_err:
             self.log.debug('Service "%s" has no service root labels. Key missing: %s',
-                           self._name, key_err)
-            raise ServiceException('Service "%s" has no service root labels. Key missing: %s',
-                                   self._name, key_err)
+                           self.get_name(), key_err)
+            raise ServiceException('Service "{}" has no service root labels. Key missing: {}'
+                                   .format(self.get_name(), key_err),
+                                   ex=key_err)
 
     def _parse_environment(self):
         try:
@@ -181,7 +182,7 @@ class Service(json.JSONEncoder):
         except KeyError as key_err:
             self.log.debug('Service "%s" has no environment. Key missing: %s', self._name, key_err)
             raise ServiceException('Service "%s" has no environment. Key missing: %s',
-                                   self._name, key_err)
+                                   ex=key_err)
 
     def _fetch_semver_version(self):
         if self._image.get_is_semver():
@@ -202,7 +203,7 @@ class Service(json.JSONEncoder):
             self.log.debug('Could not fetch environment key "%s" for service "%s"'
                            , env_key, self._name)
             raise ServiceException('Could not fetch environment key "{}" for service "{}"'
-                                   .format(env_key, self._name), key_err)
+                                   .format(env_key, self._name), ex=key_err)
 
     def _parse_semver_version(self):
         match = re.match(Regex.get_env_var_dereference_regex(),

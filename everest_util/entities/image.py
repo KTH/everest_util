@@ -5,7 +5,7 @@ __author__ = 'tinglev@kth.se'
 
 import json
 
-class Image(json.JSONEncoder):
+class Image(object):
     """
     Image class
     """
@@ -20,9 +20,8 @@ class Image(json.JSONEncoder):
         self._semver_version = None
         self._is_semver = False
         self._version_env_key = None
-        super(Image, json.JSONEncoder).__init__(self)
 
-    def default(self, o): # pylint: disable=E0202
+    def default(self):
         """
         JSONEncoder override
 
