@@ -63,9 +63,9 @@ class Registry(object):
 
     def _get_tags_list_from_response(self, response):
         try:
-            return response.json()["tags"]
-        except KeyError as key_err:
-            raise RegistryImageException('KTH Docker Registry did not return any tags', key_err)
+            return response.json()['tags']
+        except (KeyError, TypeError) as key_err:
+            raise RegistryImageException('Docker registry did not return any tags', key_err)
         except ValueError as json_err:
             raise RegistryImageException('Could not parse json response from registry', json_err)
 
@@ -80,17 +80,17 @@ class Registry(object):
             response.raise_for_status()
             return response
         except Timeout as timeout_ex:
-            raise RegistryHTTPException('Request to KTH Docker Registry timed out', ex=timeout_ex)
+            raise RegistryHTTPException('Request to Docker registry timed out', ex=timeout_ex)
         except ConnectionError as conn_ex:
-            raise RegistryHTTPException('Connection error from KTH Docker Registry', ex=conn_ex)
+            raise RegistryHTTPException('Connection error from Docker registry', ex=conn_ex)
         except HTTPError as http_ex:
             self._handle_http_error(http_ex, url)
 
     def _handle_http_error(self, error, url):
         code = error.response.status_code
         if code == 404:
-            raise RegistryImageException('Nothing found in KTH Docker Registry for {}'
+            raise RegistryImageException('Nothing found in Docker registry for {}'
                                          .format(url), ex=error)
         else:
-            raise RegistryHTTPException('KTH Docker Registry returned status code {} for {}'
+            raise RegistryHTTPException('Docker registry returned status code {} for {}'
                                         .format(code, url), ex=error)
