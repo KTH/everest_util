@@ -17,4 +17,5 @@ setup(name='everest_util',
       license='MIT',
       packages=['everest_util'],
       zip_safe=False,
-      install_requires=requirements)
+      install_requires=requirements,
+      setup_requires=['pipenv'])
