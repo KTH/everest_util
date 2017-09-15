@@ -137,12 +137,13 @@ class Slack(object):
         try:
             self.log.debug('Calling Slack with payload "%s"', payload)
             response = requests.post(self.webhook_url, json=payload)
+            response.raise_for_status()
             self.log.debug('Response was "%s"', response.text)
             return response
-        except HTTPError:
-            raise SlackHTTPErrorException
-        except ConnectTimeout:
-            raise SlackTimeoutException
-        except RequestException:
-            raise SlackRequestException
-                        
+        except HTTPError as http_err:
+            raise SlackHTTPErrorException('HTTP error when calling Slack', ex=http_err)
+        except ConnectTimeout as timeout_err:
+            raise SlackTimeoutException('Timeout when calling Slack', ex=timeout_err)
+        except RequestException as request_err:
+            raise SlackRequestException('Request error when calling Slack', ex=request_err)
+                     
