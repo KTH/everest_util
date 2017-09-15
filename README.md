@@ -34,3 +34,9 @@ development_package_name = "*"
 ```python
 from everest_util.process import Process
 ```
+
+## How to test
+1. Clone this repo with `git clone git@github.com:KTH/everest_util.git`
+2. Make sure pipenv is installed with `pip install pipenv`
+3. Run `pipenv install --dev` to install development dependencies
+4. Run `./run_tests.sh` to run test suite
