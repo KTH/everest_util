@@ -32,3 +32,10 @@ class EnvironmentListTests(unittest.TestCase):
         self.assertEqual(json.loads(json.dumps(env_list, cls=ApplicationJsonEncoder)),
                          [{'key': 'ENV_KEY', 'value': 'ENV_VALUE'},
                           {'key': 'ENV_KEY', 'value': '"ENV WITH SPACE"'}])
+
+    def test_deserialize(self):
+        env_list = EnvironmentList()
+        json_string = '[{"key":"key1", "value":"value1"},{"key":"key2", "value":"value2"}]'
+        env_list.deserialize(json_string)
+        self.assertEqual(env_list._env_list[0]['key'], 'key1')
+        self.assertEqual(len(env_list), 2)

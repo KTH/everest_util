@@ -46,3 +46,8 @@ class EnvironmentList(object):
         Len operator override
         """
         return len(self._env_list)
+
+    def deserialize(self, json_string):
+        json_data = json.loads(json_string)
+        for variable in json_data:
+            self.add_env(variable['key'], variable['value'])

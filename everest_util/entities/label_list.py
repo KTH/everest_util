@@ -4,7 +4,7 @@ Class representation of a list of labels from a docker-stack file
 __author__ = 'tinglev@kth.se'
 
 import json
-
+ 
 class LabelList(object):
     """
     The class
@@ -34,3 +34,11 @@ class LabelList(object):
             value: the value
         """
         self._label_list.append({'label': label, 'value': value})
+
+    def __len__(self):
+        return len(self._label_list)
+
+    def deserialize(self, json_string):
+        json_data = json.loads(json_string)
+        for label in json_data:
+            self.add_label(label['label'], label['value'])
