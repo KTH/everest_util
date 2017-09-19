@@ -77,7 +77,7 @@ class Cluster(object):
         """
         json_data = json.loads(json_string)
         self._name = json_data['cluster_name']
-        if json_data['environment']:
+        if 'environment' in json_data:
             self._env_list.deserialize(json.dumps(json_data['environment'],
                                        cls=ApplicationJsonEncoder))
         return self
