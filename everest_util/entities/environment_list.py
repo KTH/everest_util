@@ -48,6 +48,12 @@ class EnvironmentList(object):
         return len(self._env_list)
 
     def deserialize(self, json_string):
+        """
+        Deserializes this object from a valid json string
+
+        Args:
+            json_string: a string containing valid json
+        """
         json_data = json.loads(json_string)
         for variable in json_data:
             self.add_env(variable['key'], variable['value'])

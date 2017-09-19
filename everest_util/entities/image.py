@@ -111,3 +111,15 @@ class Image(object):
         Getter for the version env key attribute
         """
         return self._version_env_key
+
+    def deserialize(self, json_string):
+        """
+        Deserializes this object from a valid json string
+
+        Args:
+            json_string: a string containing valid json
+        """
+        json_data = json.loads(json_string)
+        self._name = json_data['image_name']
+        self._static_version = json_data['static_version']
+        self._semver_version = json_data['semver_version']

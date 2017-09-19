@@ -36,9 +36,18 @@ class LabelList(object):
         self._label_list.append({'label': label, 'value': value})
 
     def __len__(self):
+        """
+        Length override
+        """
         return len(self._label_list)
 
     def deserialize(self, json_string):
+        """
+        Deserializes this object from a valid json string
+
+        Args:
+            json_string: a string containing valid json
+        """
         json_data = json.loads(json_string)
         for label in json_data:
             self.add_label(label['label'], label['value'])
