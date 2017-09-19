@@ -13,7 +13,5 @@ class ImageTests(unittest.TestCase):
         image1.set_name('kth-azure-app')
         image1.set_static_version('1.0')
         image1.set_semver_version('~2.0')
-        json_string = json.dumps(image1.default())
-        image2 = Image()
-        image2.deserialize(json_string)
+        image2 = Image().deserialize(json.dumps(image1, cls=ApplicationJsonEncoder))
         self.assertEqual(image1, image2)

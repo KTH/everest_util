@@ -41,13 +41,23 @@ class LabelList(object):
         """
         return len(self._label_list)
 
+    def __eq__(self, label_list):
+        """
+        Equality operator override
+        """
+        return self._label_list == label_list
+
     def deserialize(self, json_string):
         """
         Deserializes this object from a valid json string
 
         Args:
             json_string: a string containing valid json
+
+        Returns:
+            self: for chaining purposes
         """
         json_data = json.loads(json_string)
         for label in json_data:
             self.add_label(label['label'], label['value'])
+        return self

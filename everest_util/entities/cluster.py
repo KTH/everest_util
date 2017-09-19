@@ -70,10 +70,14 @@ class Cluster(object):
 
         Args:
             json_string: a string containing valid json
+        
+        Returns:
+            self: for chaining purposes
         """
         json_data = json.loads(json_string)
         self._name = json_data['cluster_name']
         self._env_list.deserialize(json.dumps(json_data['environment']))
+        return self
 
     def get_name(self):
         """

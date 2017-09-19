@@ -29,7 +29,7 @@ class ClusterTests(unittest.TestCase):
         expected = {'cluster_name': 'stage',
                     'environment': [{'key': 'ENV_KEY1', 'value': 'ENV_VALUE1'},
                                     {'key': 'ENV_KEY2', 'value': '"ENV AS STRING"'}]}
-        self.assertEqual(json.loads(ApplicationJsonEncoder().encode(cluster)), expected)
+        self.assertEqual(json.loads(json.dumps(cluster, cls=ApplicationJsonEncoder)), expected)
 
     def test_deserialize(self):
         cluster1 = Cluster(root_path.get_root_path())
@@ -37,10 +37,7 @@ class ClusterTests(unittest.TestCase):
         cluster1._env_list.add_env('ENV_KEY1', 'ENV_VALUE1')
         cluster1._env_list.add_env('ENV_KEY2', '"ENV AS STRING"')
         cluster2 = Cluster(root_path.get_root_path())
-        json_string = ('{"cluster_name":"stage", "environment": '
-                       '[{"key":"ENV_KEY1", "value":"ENV_VALUE1"}, '
-                       '{"key":"ENV_KEY2", "value":"ENV_VALUE2"}]}')
-        cluster2.deserialize(json_string)
+        cluster2.deserialize(json.dumps(cluster1, cls=ApplicationJsonEncoder))
         self.assertEqual(cluster1, cluster2)
 
     def test_set_cluster_name(self):

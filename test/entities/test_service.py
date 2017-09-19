@@ -126,6 +126,22 @@ class ServiceTests(unittest.TestCase):
                      'image': {'image_name': 'kth-azure-app', 'static_version': '1.0', 'semver_version': '2.0'}}
         self.assertEqual(json.loads(json.dumps(service, cls=ApplicationJsonEncoder)), expected)
 
+    def test_deserialize(self):
+        service = Service(Registry('', '', ''))
+        service._name = 'web'
+        service._labels.add_label('label1', 'value1')
+        service._labels.add_label('label2', 'value2')
+        service._deploy_labels.add_label('d_label1', 'value1')
+        service._deploy_labels.add_label('d_label2', 'value2')
+        service._env_list.add_env('ENV_1', 'VAL_1')
+        service._image = Image()
+        service._image.set_name('kth-azure-app')
+        service._image.set_static_version('1.0')
+        service._image.set_semver_version('2.0')
+        service2 = Service(Registry('', '', ''))
+        service2.deserialize(json.dumps(service, cls=ApplicationJsonEncoder))
+        self.assertEqual(service2, service)
+
     def test_get_resources(self):
         service = Service(Registry('', '', ''))
         service._service_struct = {'deploy': {'resources': {'limits': {'cpus': '0.001',

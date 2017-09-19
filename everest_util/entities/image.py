@@ -118,8 +118,12 @@ class Image(object):
 
         Args:
             json_string: a string containing valid json
+
+        Returns:
+            self: for chaining purposes
         """
         json_data = json.loads(json_string)
         self._name = json_data['image_name']
         self._static_version = json_data['static_version']
         self._semver_version = json_data['semver_version']
+        return self

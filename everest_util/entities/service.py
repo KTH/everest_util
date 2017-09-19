@@ -39,17 +39,6 @@ class Service(object):
         self.registry = registry
         self.log = logging.getLogger(__name__)
 
-    def default(self):
-        """
-        JSONEncoder override
-
-        Returns:
-            json: a json representation of this class
-        """
-        return dict(service_name=self._name, environment=self._env_list,
-                    labels=self._labels, deploy_labels=self._deploy_labels,
-                    image=self._image)
-
     def init_from_stack_service(self, name, service_struct):
         """
         Initializes an instance of the class given a name and the parsed contents
@@ -133,6 +122,39 @@ class Service(object):
         """
         return (self.get_name() == service.get_name() and
                 self.get_image() == service.get_image())
+
+    def default(self):
+        """
+        JSONEncoder override
+
+        Returns:
+            json: a json representation of this class
+        """
+        return dict(service_name=self._name, environment=self._env_list,
+                    labels=self._labels, deploy_labels=self._deploy_labels,
+                    image=self._image)
+
+    def deserialize(self, json_string):
+        """
+        Deserializes this object from a valid json string
+
+        Args:
+            json_string: a string containing valid json
+
+        Returns:
+            self: for chaining purposes
+        """
+        json_data = json.loads(json_string)
+        self._name = json_data['service_name']
+        image_string = json.dumps(json_data['image'])
+        env_string = json.dumps(json_data['environment'])
+        label_string = json.dumps(json_data['labels'])
+        deploy_string = json.dumps(json_data['deploy_labels'])
+        self._env_list.deserialize(env_string)
+        self._deploy_labels.deserialize(deploy_string)
+        self._labels.deserialize(label_string)
+        self._image.deserialize(image_string)
+        return self
 
     def _create_environment_list(self):
         if self._image.get_is_semver():

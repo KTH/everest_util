@@ -21,8 +21,8 @@ class LabelListTests(unittest.TestCase):
         self.assertEqual(json.loads(json.dumps(label_list, cls=ApplicationJsonEncoder)), expected)
 
     def test_deserialize(self):
-        json_string = '[{"label": "label1", "value": "value1"}, {"label": "label2", "value": "value2"}]'
-        label_list = LabelList()
-        label_list.deserialize(json_string)
-        self.assertEqual(label_list._label_list[0]['label'], 'label1')
-        self.assertTrue(len(label_list), 2)
+        label_list1 = LabelList()
+        label_list1.add_label('_label', '_value')
+        label_list1.add_label('_label2', '_value2')
+        label_list2 = LabelList().deserialize(json.dumps(label_list1, cls=ApplicationJsonEncoder))
+        self.assertEqual(label_list1, label_list2)
