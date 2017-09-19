@@ -64,6 +64,17 @@ class Cluster(object):
         """
         return dict(cluster_name=self._name, environment=self._env_list)
 
+    def deserialize(self, json_string):
+        """
+        Deserializes this object from a valid json string
+
+        Args:
+            json_string: a string containing valid json
+        """
+        json_data = json.loads(json_string)
+        self._name = json_data['cluster_name']
+        self._env_list.deserialize(json.dumps(json_data['environment']))
+
     def get_name(self):
         """
         Getter for the name attribute

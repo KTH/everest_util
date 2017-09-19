@@ -31,6 +31,18 @@ class ClusterTests(unittest.TestCase):
                                     {'key': 'ENV_KEY2', 'value': '"ENV AS STRING"'}]}
         self.assertEqual(json.loads(ApplicationJsonEncoder().encode(cluster)), expected)
 
+    def test_deserialize(self):
+        cluster1 = Cluster(root_path.get_root_path())
+        cluster1._name = 'stage'
+        cluster1._env_list.add_env('ENV_KEY1', 'ENV_VALUE1')
+        cluster1._env_list.add_env('ENV_KEY2', '"ENV AS STRING"')
+        cluster2 = Cluster(root_path.get_root_path())
+        json_string = ('{"cluster_name":"stage", "environment": '
+                       '[{"key":"ENV_KEY1", "value":"ENV_VALUE1"}, '
+                       '{"key":"ENV_KEY2", "value":"ENV_VALUE2"}]}')
+        cluster2.deserialize(json_string)
+        self.assertEqual(cluster1, cluster2)
+
     def test_set_cluster_name(self):
         service_file_path = ('{}/cellus-registry/deploy/kth-azure-app/stage/docker-stack.yml'
                              .format(root_path.get_root_path()))
