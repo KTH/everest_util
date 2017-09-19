@@ -4,10 +4,11 @@ import os
 import json
 import unittest
 from mock import patch
-from everest_util.entities.application import Application, ApplicationJsonEncoder, ApplicationException
+from everest_util.entities.application import Application, ApplicationException
 from everest_util.systems.registry import Registry
 import test.entities.test_data as test_data
 import root_path
+from everest_util.json_encoder import ApplicationJsonEncoder
 
 class ApplicationTests(unittest.TestCase):
 
@@ -80,6 +81,12 @@ class ApplicationTests(unittest.TestCase):
         self.assertEqual(app_as_json['services'][0]['labels'][0]['label'], 'se.kth.label.bool')
         self.assertEqual(app_as_json['services'][0]['image']['image_name'], 'kth-azure-app')
         self.assertEqual(app_as_json['services'][0]['environment'][0]['key'], 'ENV_KEY1')
+    
+    def test_deserialize(self):
+        app1 = test_data.get_test_application()
+        app2 = Application(Registry('','',''), root_path.get_root_path())
+        app2.deserialize(json.dumps(app1, cls=ApplicationJsonEncoder))
+        self.assertEqual(app1, app2)
 
     def test_to_string(self):
         app = test_data.get_test_application()

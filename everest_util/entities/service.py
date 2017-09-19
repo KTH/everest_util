@@ -12,6 +12,7 @@ from everest_util.entities.label_list import LabelList
 from everest_util.regex import Regex
 from everest_util.version import Version
 from everest_util.base_exception import EverestException
+from everest_util.json_encoder import ApplicationJsonEncoder
 
 class ServiceException(EverestException):
     """
@@ -146,10 +147,10 @@ class Service(object):
         """
         json_data = json.loads(json_string)
         self._name = json_data['service_name']
-        image_string = json.dumps(json_data['image'])
-        env_string = json.dumps(json_data['environment'])
-        label_string = json.dumps(json_data['labels'])
-        deploy_string = json.dumps(json_data['deploy_labels'])
+        image_string = json.dumps(json_data['image'], cls=ApplicationJsonEncoder)
+        env_string = json.dumps(json_data['environment'], cls=ApplicationJsonEncoder)
+        label_string = json.dumps(json_data['labels'], cls=ApplicationJsonEncoder)
+        deploy_string = json.dumps(json_data['deploy_labels'], cls=ApplicationJsonEncoder)
         self._env_list.deserialize(env_string)
         self._deploy_labels.deserialize(deploy_string)
         self._labels.deserialize(label_string)

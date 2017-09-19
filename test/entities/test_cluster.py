@@ -7,7 +7,7 @@ import StringIO
 from mock import patch
 from everest_util.paths import Paths
 from everest_util.entities.cluster import Cluster, ClusterException
-from everest_util.entities.application import ApplicationJsonEncoder
+from everest_util.json_encoder import ApplicationJsonEncoder
 import root_path
 
 class ClusterTests(unittest.TestCase):

@@ -11,6 +11,7 @@ from everest_util.paths import Paths
 from everest_util.entities.environment_list import EnvironmentList
 from everest_util.regex import Regex
 from everest_util.base_exception import EverestException
+from everest_util.json_encoder import ApplicationJsonEncoder
 
 class ClusterException(EverestException):
     """
@@ -76,7 +77,8 @@ class Cluster(object):
         """
         json_data = json.loads(json_string)
         self._name = json_data['cluster_name']
-        self._env_list.deserialize(json.dumps(json_data['environment']))
+        self._env_list.deserialize(json.dumps(json_data['environment'],
+                                   cls=ApplicationJsonEncoder))
         return self
 
     def get_name(self):

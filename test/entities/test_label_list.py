@@ -4,7 +4,7 @@ import unittest
 import json
 from mock import patch
 from everest_util.entities.label_list import LabelList
-from everest_util.entities.application import ApplicationJsonEncoder
+from everest_util.json_encoder import ApplicationJsonEncoder
 
 class LabelListTests(unittest.TestCase):
 

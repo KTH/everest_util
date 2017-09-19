@@ -4,7 +4,7 @@ import unittest
 import json
 from mock import patch, MagicMock
 from everest_util.entities.service import Service, ServiceException
-from everest_util.entities.application import ApplicationJsonEncoder
+from everest_util.json_encoder import ApplicationJsonEncoder
 from everest_util.entities.image import Image
 from everest_util.entities.label_list import LabelList
 from everest_util.systems.registry import Registry

@@ -13,19 +13,13 @@ from everest_util.entities.service import Service
 from everest_util.entities.cluster import Cluster
 from everest_util.base_exception import EverestException
 from everest_util.regex import Regex
+from everest_util.json_encoder import ApplicationJsonEncoder
 
 class ApplicationException(EverestException):
     """
     Raised when an error occurs during application processing
     """
     pass
-
-class ApplicationJsonEncoder(json.JSONEncoder):
-    def default(self, o): # pylint: disable=E0202
-        if hasattr(o, 'default'):
-            return o.default()
-        else:
-            return json.JSONEncoder.default(self, o)
 
 class Application(object):
     """
@@ -43,7 +37,7 @@ class Application(object):
         self.registry = registry
         self._file_path = None
         self._application_name = None
-        self._cluster = None
+        self._cluster = Cluster(application_root_path)
         self._yaml_content = None
         self._raw_file_content = None
         self._file_content_md5 = None
@@ -62,6 +56,27 @@ class Application(object):
                     cluster=self._cluster,
                     service_file_md5=self._file_content_md5,
                     services=self._services)
+
+    def deserialize(self, json_string):
+        """
+        Deserializes this object from a valid json string
+
+        Args:
+            json_string: a string containing valid json
+
+        Returns:
+            self: for chaining purposes
+        """        
+        json_data = json.loads(json_string)
+        self._application_name = json_data['application_name']
+        self._file_content_md5 = json_data['service_file_md5']
+        self._services = []
+        for service in json_data['services']:
+            service_string = json.dumps(service, cls=ApplicationJsonEncoder)
+            self._services.append(Service(self.registry).deserialize(service_string))
+        cluster_string = json.dumps(json_data['cluster'], cls=ApplicationJsonEncoder)
+        self._cluster.deserialize(cluster_string)
+        return self
 
     def init_from_service_file(self, service_file_path):
         """
