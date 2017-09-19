@@ -74,7 +74,7 @@ class ApplicationTests(unittest.TestCase):
 
     def test_to_json(self):
         app = test_data.get_test_application()
-        app_as_json = json.loads(ApplicationJsonEncoder().encode(app))
+        app_as_json = json.loads(json.dumps(app, cls=ApplicationJsonEncoder))
         self.assertEqual(app_as_json['application_name'], 'kth-azure-app')
         self.assertEqual(app_as_json['cluster']['cluster_name'], 'stage')
         self.assertEqual(len(app_as_json['services']), 2)
