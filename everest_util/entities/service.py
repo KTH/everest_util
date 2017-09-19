@@ -148,12 +148,15 @@ class Service(object):
         json_data = json.loads(json_string)
         self._name = json_data['service_name']
         image_string = json.dumps(json_data['image'], cls=ApplicationJsonEncoder)
-        env_string = json.dumps(json_data['environment'], cls=ApplicationJsonEncoder)
-        label_string = json.dumps(json_data['labels'], cls=ApplicationJsonEncoder)
-        deploy_string = json.dumps(json_data['deploy_labels'], cls=ApplicationJsonEncoder)
-        self._env_list.deserialize(env_string)
-        self._deploy_labels.deserialize(deploy_string)
-        self._labels.deserialize(label_string)
+        if json_data['environment']:
+            env_string = json.dumps(json_data['environment'], cls=ApplicationJsonEncoder)
+            self._env_list.deserialize(env_string)
+        if json_data['labels']:
+            label_string = json.dumps(json_data['labels'], cls=ApplicationJsonEncoder)
+            self._labels.deserialize(label_string)
+        if json_data['deploy_labels']:
+            deploy_string = json.dumps(json_data['deploy_labels'], cls=ApplicationJsonEncoder)
+            self._deploy_labels.deserialize(deploy_string)
         self._image.deserialize(image_string)
         return self
 
