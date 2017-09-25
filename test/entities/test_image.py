@@ -2,7 +2,6 @@ __author__ = 'tinglev@kth.se'
 
 import unittest
 import json
-from mock import patch
 from everest_util.entities.image import Image
 from everest_util.json_encoder import ApplicationJsonEncoder
 
